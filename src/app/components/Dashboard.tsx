@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Building2, MessageCircle, Video, Users, Clock, Coffee, Settings, Home, LogOut } from 'lucide-react';
 import { Chat } from '@/components/chat/Chat';
 import { OverviewContent } from '@/components/overview/Overview';
+import VirtualRooms from '@/components/virtualRooms/VirtualRooms'; // Default import
 import { useChatStore } from '@/lib/store/chat-store';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthProviders } from '../auth/providers';
@@ -266,7 +267,7 @@ function DashboardContent() {
             {[
               { icon: Home, label: 'Overview', value: 'overview' },
               { icon: MessageCircle, label: 'Chat', value: 'chat' },
-              { icon: Video, label: 'Virtual Rooms' },
+              { icon: Video, label: 'Virtual Rooms', value: 'virtualRooms' }, // Add value to Virtual Rooms
               { icon: Users, label: 'Team' },
               { icon: Clock, label: 'Time Zones' },
               { icon: Coffee, label: 'Social' },
@@ -275,9 +276,9 @@ function DashboardContent() {
               <React.Fragment key={item.label}>
                 {index < 6 && (
                   <button
-                    onClick={() => setActiveTab(item.label.toLowerCase())}
+                    onClick={() => setActiveTab(item.value || item.label.toLowerCase())} // Update onClick event
                     className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm ${
-                      item.label.toLowerCase() === activeTab
+                      (item.value || item.label.toLowerCase()) === activeTab
                         ? 'bg-blue-500 text-white'
                         : 'text-slate-300 hover:bg-slate-700/50'
                     }`}
@@ -316,6 +317,7 @@ function DashboardContent() {
       <div className="flex-1">
         {activeTab === 'overview' && <OverviewContent />}
         {activeTab === 'chat' && <Chat />}
+        {activeTab === 'virtualRooms' && <VirtualRooms />} // Add VirtualRooms component
         {/* Add other tab content here */}
       </div>
     </div>
