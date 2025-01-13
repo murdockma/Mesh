@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Building2, MessageCircle, Video, Users, Clock, Coffee, Settings, Home } from 'lucide-react';
+import { Building2, MessageCircle, Video, Users, Clock, Coffee, Settings, Home, LogOut } from 'lucide-react';
 import { Chat } from '@/components/chat/Chat';
+import { OverviewContent } from '@/components/overview/Overview';
 import { useChatStore } from '@/lib/store/chat-store';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthProviders } from '../auth/providers';
@@ -19,6 +20,15 @@ export default function Dashboard() {
 function DashboardContent() {
   const [activeTab, setActiveTab] = useState('chat');
   const { currentUser } = useChatStore();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
+
+  const handleSignOut = () => {
+    signOut({ callbackUrl: '/login' });
+  };
 
   // Initialize chat data
   useEffect(() => {
@@ -26,7 +36,7 @@ function DashboardContent() {
     const mockData = {
       currentUser: {
         id: 'you',
-        name: 'Michael Chen',
+        name: 'Michael Murdock',
         email: 'michael@example.com',
         avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
         status: 'online',
@@ -34,12 +44,12 @@ function DashboardContent() {
         role: 'admin',
         title: 'Senior Software Engineer',
         department: 'Engineering',
-        location: 'San Francisco, CA',
+        location: 'Denver, CO',
         joinDate: '2023-01-15',
         bio: 'Full-stack developer passionate about building great user experiences',
         skills: ['React', 'TypeScript', 'Node.js', 'Python'],
-        githubUsername: 'michaelchen',
-        linkedinUrl: 'https://linkedin.com/in/michaelchen'
+        githubUsername: 'michaelm',
+        linkedinUrl: 'https://linkedin.com/in/michaelm'
       },
       currentChannel: 'general',
       channels: [
@@ -138,7 +148,7 @@ function DashboardContent() {
       users: [
         {
           id: 'you',
-          name: 'Michael Chen',
+          name: 'Michael Murdock',
           email: 'michael@example.com',
           avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
           status: 'online',
@@ -146,12 +156,12 @@ function DashboardContent() {
           role: 'admin',
           title: 'Senior Software Engineer',
           department: 'Engineering',
-          location: 'San Francisco, CA',
+          location: 'Denver, CO',
           joinDate: '2023-01-15',
           bio: 'Full-stack developer passionate about building great user experiences',
           skills: ['React', 'TypeScript', 'Node.js', 'Python'],
-          githubUsername: 'michaelchen',
-          linkedinUrl: 'https://linkedin.com/in/michaelchen'
+          githubUsername: 'michaelm',
+          linkedinUrl: 'https://linkedin.com/in/michaelm'
         },
         {
           id: 'sarah',
@@ -254,26 +264,49 @@ function DashboardContent() {
         <nav className="flex-1">
           <div className="space-y-1">
             {[
-              { icon: Home, label: 'Overview' },
-              { icon: MessageCircle, label: 'Chat' },
+              { icon: Home, label: 'Overview', value: 'overview' },
+              { icon: MessageCircle, label: 'Chat', value: 'chat' },
               { icon: Video, label: 'Virtual Rooms' },
               { icon: Users, label: 'Team' },
               { icon: Clock, label: 'Time Zones' },
               { icon: Coffee, label: 'Social' },
               { icon: Settings, label: 'Settings' },
-            ].map((item) => (
-              <button
-                key={item.label}
-                onClick={() => setActiveTab(item.label.toLowerCase())}
-                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm ${
-                  item.label.toLowerCase() === activeTab
-                    ? 'bg-blue-500 text-white'
-                    : 'text-slate-300 hover:bg-slate-700/50'
-                }`}
-              >
-                <item.icon className="h-5 w-5" />
-                {item.label}
-              </button>
+            ].map((item, index) => (
+              <React.Fragment key={item.label}>
+                {index < 6 && (
+                  <button
+                    onClick={() => setActiveTab(item.label.toLowerCase())}
+                    className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm ${
+                      item.label.toLowerCase() === activeTab
+                        ? 'bg-blue-500 text-white'
+                        : 'text-slate-300 hover:bg-slate-700/50'
+                    }`}
+                  >
+                    <item.icon className="h-5 w-5" />
+                    {item.label}
+                  </button>
+                )}
+                {index === 6 && (
+                  <div>
+                    <button
+                      className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-700/50"
+                      onClick={() => setActiveTab('settings')}
+                    >
+                      <Settings className="h-5 w-5" />
+                      Settings
+                    </button>
+                    <div className="mt-4 flex items-start justify-start pl-4">
+                      <p
+                        onClick={() => signOut({ callbackUrl: '/login' })}
+                        className="text-slate-400 cursor-pointer hover:text-slate-300 text-sm flex items-center gap-2"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        Log Out
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </React.Fragment>
             ))}
           </div>
         </nav>
@@ -281,6 +314,7 @@ function DashboardContent() {
 
       {/* Main Content Area */}
       <div className="flex-1">
+        {activeTab === 'overview' && <OverviewContent />}
         {activeTab === 'chat' && <Chat />}
         {/* Add other tab content here */}
       </div>
