@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { Building2, MessageCircle, Video, Users, Clock, Coffee, Settings, Home, LogOut } from 'lucide-react';
 import { Chat } from '@/components/chat/Chat';
 import { OverviewContent } from '@/components/overview/Overview';
-import VirtualRooms from '@/components/virtualRooms/VirtualRooms'; // Default import
+import VirtualRooms from '@/components/virtualRooms/VirtualRooms';
+import TimeZoneCalendar from '@/components/calendar/CalendarManager';
 import { useChatStore } from '@/lib/store/chat-store';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthProviders } from '../auth/providers';
@@ -259,7 +260,7 @@ function DashboardContent() {
           <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
             <Building2 className="h-5 w-5 text-white" />
           </div>
-          <h1 className="text-xl font-bold text-white">RemoteHub</h1>
+          <h1 className="text-xl font-bold text-white">Mesh</h1>
         </div>
         
         <nav className="flex-1">
@@ -268,10 +269,10 @@ function DashboardContent() {
               { icon: Home, label: 'Overview', value: 'overview' },
               { icon: MessageCircle, label: 'Chat', value: 'chat' },
               { icon: Video, label: 'Virtual Rooms', value: 'virtualRooms' }, // Add value to Virtual Rooms
-              { icon: Users, label: 'Team' },
-              { icon: Clock, label: 'Time Zones' },
-              { icon: Coffee, label: 'Social' },
-              { icon: Settings, label: 'Settings' },
+              { icon: Users, label: 'Team', value: 'team' },
+              { icon: Clock, label: 'Time Zones', value: 'timezones' },
+              { icon: Coffee, label: 'Social', value: 'social' },
+              { icon: Settings, label: 'Settings', value: 'settings' },
             ].map((item, index) => (
               <React.Fragment key={item.label}>
                 {index < 6 && (
@@ -317,7 +318,8 @@ function DashboardContent() {
       <div className="flex-1">
         {activeTab === 'overview' && <OverviewContent />}
         {activeTab === 'chat' && <Chat />}
-        {activeTab === 'virtualRooms' && <VirtualRooms />} // Add VirtualRooms component
+        {activeTab === 'virtualRooms' && <VirtualRooms />}
+        {activeTab === 'timezones' && <TimeZoneCalendar />}
         {/* Add other tab content here */}
       </div>
     </div>
