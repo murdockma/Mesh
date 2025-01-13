@@ -6,6 +6,7 @@ import { Chat } from '@/components/chat/Chat';
 import { useChatStore } from '@/lib/store/chat-store';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthProviders } from '../auth/providers';
+import { signOut } from 'next-auth/react';
 
 export default function Dashboard() {
   return (
