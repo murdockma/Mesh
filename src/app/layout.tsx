@@ -17,8 +17,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <AuthProviders>{children}</AuthProviders>
+      <body className={`${inter.className} bg-slate-900`}>
+        <AuthProviders>
+          <div className="min-h-screen">
+            <main className="flex-1">
+              {children}
+            </main>
+          </div>
+        </AuthProviders>
       </body>
     </html>
   );

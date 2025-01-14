@@ -6,6 +6,9 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import OpenAI from "openai";
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
+import '@/app/globals.css';
 
 // Animated Gradient Background
 const GradientBackground = () => (
@@ -111,7 +114,7 @@ const ActivityTimeline = () => {
 // });
 
 const AIAssistant = () => {
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(true);
   const [messages, setMessages] = useState([
     { role: 'assistant', content: 'Hello! How can I help you today?' }
   ]);
@@ -239,7 +242,7 @@ const ProductivityChart = () => {
       <CardHeader>
         <CardTitle className="text-lg font-semibold text-white">Team Productivity</CardTitle>
       </CardHeader>
-      <CardContent className="h-52">
+      <CardContent className="h-60">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
             <XAxis 
@@ -273,6 +276,56 @@ const ProductivityChart = () => {
   );
 };
 
+const ParticlesBackground = () => {
+  const particlesInit = async (main) => {
+    await loadFull(main);
+  };
+
+  return (
+    <Particles
+      id="tsparticles"
+      init={particlesInit}
+      options={{
+        fullScreen: { enable: true },
+        background: { color: "#0f172a" },
+        particles: {
+          number: { value: 50 },
+          color: { value: "#38bdf8" },
+          shape: { type: "circle" },
+          opacity: { value: 0.5 },
+          size: { value: 3 },
+          move: {
+            enable: true,
+            speed: 1.5,
+            direction: "none",
+            outModes: { default: "bounce" },
+          },
+          links: {
+            enable: true,
+            color: "#38bdf8",
+            distance: 150,
+          },
+        },
+        detectRetina: true,
+      }}
+    />
+  );
+};
+
+const AuroraAnimation = () => (
+  <div
+    className="absolute inset-0 -z-20 animate-aurora"
+    style={{
+      background: `
+        radial-gradient(circle at top left, rgba(99, 102, 241, 0.4), transparent 70%),
+        radial-gradient(circle at bottom right, rgba(16, 185, 129, 0.4), transparent 70%)
+      `,
+      filter: "blur(50px)",
+    }}
+  />
+);
+
+
 // Main Overview Content
 export const OverviewContent = () => {
   const [notifications, setNotifications] = useState([
@@ -282,8 +335,9 @@ export const OverviewContent = () => {
   ]);
 
   return (
-    <div className="relative flex-1 p-6 space-y-6 overflow-y-auto">
+    <div className="relative flex-1 p-6 px-8 space-y-6 overflow-y-auto">
       <GradientBackground />
+      <AuroraAnimation />
       
       {/* Header Section */}
       <div className="flex items-center justify-between">
@@ -337,7 +391,8 @@ export const OverviewContent = () => {
           <button onClick={handleSend}>Send</button>
         </div>
       </div> */}
-      {/* <AIAssistant /> */}
+      <AIAssistant />
+      {/* <ParticlesBackground /> */}
     </div>
   );
 };

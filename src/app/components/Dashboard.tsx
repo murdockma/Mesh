@@ -6,6 +6,7 @@ import { Chat } from '@/components/chat/Chat';
 import { OverviewContent } from '@/components/overview/Overview';
 import VirtualRooms from '@/components/virtualRooms/VirtualRooms';
 import TimeZoneCalendar from '@/components/calendar/CalendarManager';
+import TeamPage from '@/components/team/TeamPage';
 import { useChatStore } from '@/lib/store/chat-store';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthProviders } from '../auth/providers';
@@ -320,6 +321,7 @@ function DashboardContent() {
         {activeTab === 'chat' && <Chat />}
         {activeTab === 'virtualRooms' && <VirtualRooms />}
         {activeTab === 'timezones' && <TimeZoneCalendar />}
+        {activeTab === 'team' && <TeamPage />}
         {/* Add other tab content here */}
       </div>
     </div>
